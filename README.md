@@ -19,7 +19,7 @@ A TUI music player written in Python that plays music directly from your local f
 * mpv
 
 ## Installation
-Install Dependencies
+### Install Dependencies
 * Arch Linux
   
   ```bash
@@ -37,8 +37,15 @@ Install Dependencies
   ```bash
   sudo apt install python3 python3-pip mpv ffmpeg
   
-Install MusicTui
-```bash
-git clone https://github.com/yourusername/term-music.git
-cd term-music
-pip install -e .
+### Install MusicTui
+
+  ```bash
+  git clone https://github.com/BaconPancakes7959/musictui.git
+  cd term-music
+  pip install -e .
+
+### Python Dependencies
+Only install if you don't have it
+  ```bash
+  pip install wcwidth mutagen
+
