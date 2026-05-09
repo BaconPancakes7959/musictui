@@ -20,15 +20,19 @@ A TUI music player written in Python that plays music directly from your local f
 ## Installation
 Install Dependencies
 * Arch Linux
+* 
   ```bash
   sudo pacman -S python python-pip mpv ffmpeg
 * Ubuntu/Debian
+* 
   ```bash
   sudo apt install python3 python3-pip mpv ffmpeg
 * macOS
+* 
   ```bash
   `brew install python mpv ffmpeg`
 * Windows (WSL2)
+* 
   ```bash
   sudo apt install python3 python3-pip mpv ffmpeg
   
