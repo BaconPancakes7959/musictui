@@ -45,3 +45,5 @@ A TUI music player written in Python that plays music directly from your local f
   pip install -e .
 
 
+
+
