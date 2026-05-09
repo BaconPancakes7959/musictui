@@ -1,4 +1,4 @@
-# musictui
+# MusicTui
 A TUI music player written in Python that plays music directly from your local files. 
 
 ##Features
