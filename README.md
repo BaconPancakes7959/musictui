@@ -24,18 +24,22 @@ A TUI music player written in Python that plays music directly from your local f
   
   ```bash
   sudo pacman -S python python-pip mpv ffmpeg
+  ```
 - Ubuntu/Debian
   
   ```bash
   sudo apt install python3 python3-pip mpv ffmpeg
+  ```
 - macOS
   
   ```bash
   brew install python mpv ffmpeg
+  ```
 - Windows (WSL2)
   
   ```bash
   sudo apt install python3 python3-pip mpv ffmpeg
+  ```
   
 ### Install MusicTui
 
@@ -46,6 +50,7 @@ A TUI music player written in Python that plays music directly from your local f
   ```
 
 ### Python Dependencies
-Only install if you don't have it
+Only install if you don't have it. It comes with the musictui package
   ```bash
   pip install wcwidth mutagen
+  ```
