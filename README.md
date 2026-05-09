@@ -3,8 +3,10 @@ A TUI music player written in Python that plays music directly from your local f
 
 ## Features
 * Play media formats
+  
   * MP3, FLAC, OGG, WAV, AAC, M4A, Opus, WMA, APE
   * Extra: AC3, DTS, TrueHD, AMR, AIFF
+    
 * Search your library
 * Customizable color theme
 * Skip forward/backward 10 seconds
