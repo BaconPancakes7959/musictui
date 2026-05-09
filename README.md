@@ -44,8 +44,4 @@ A TUI music player written in Python that plays music directly from your local f
   cd term-music
   pip install -e .
 
-### Python Dependencies
-Only install if you don't have it
-  ```bash
-  pip install wcwidth mutagen
 
