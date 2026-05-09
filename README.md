@@ -20,22 +20,20 @@ A TUI music player written in Python that plays music directly from your local f
 ## Installation
 Install Dependencies
 * Arch Linux
-  
-  `sudo pacman -S python python-pip mpv ffmpeg`
+  ```bash
+  sudo pacman -S python python-pip mpv ffmpeg
 * Ubuntu/Debian
-  
-  `sudo apt install python3 python3-pip mpv ffmpeg`
+  ```bash
+  sudo apt install python3 python3-pip mpv ffmpeg
 * macOS
-  
+  ```bash
   `brew install python mpv ffmpeg`
 * Windows (WSL2)
-  
-  `sudo apt install python3 python3-pip mpv ffmpeg`
+  ```bash
+  sudo apt install python3 python3-pip mpv ffmpeg
   
 Install MusicTui
-
-`git clone https://github.com/yourusername/term-music.git`
-
-`cd term-music`
-
-`pip install -e .`
+```bash
+git clone https://github.com/yourusername/term-music.git
+cd term-music
+pip install -e .
