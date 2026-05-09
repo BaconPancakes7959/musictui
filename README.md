@@ -2,37 +2,37 @@
 A TUI music player written in Python that plays music directly from your local files. 
 
 ## Features
-* Play media formats
+- Play media formats
   
-  * MP3, FLAC, OGG, WAV, AAC, M4A, Opus, WMA, APE
-  * Extra: AC3, DTS, TrueHD, AMR, AIFF
+  - MP3, FLAC, OGG, WAV, AAC, M4A, Opus, WMA, APE
+  - Extra: AC3, DTS, TrueHD, AMR, AIFF
     
-* Search your library
-* Customizable color theme
-* Skip forward/backward 10 seconds
-* Volume control
-* Shuffle mode
-* Repeat mode
+- Search your library
+- Customizable color theme
+- Skip forward/backward 10 seconds
+- Volume control
+- Shuffle mode
+- Repeat mode
 
 ## Dependencies
-* Python 3.8+
-* mpv
+- Python 3.8+
+- mpv
 
 ## Installation
 ### Install Dependencies
-* Arch Linux
+- Arch Linux
   
   ```bash
   sudo pacman -S python python-pip mpv ffmpeg
-* Ubuntu/Debian
+- Ubuntu/Debian
   
   ```bash
   sudo apt install python3 python3-pip mpv ffmpeg
-* macOS
+- macOS
   
   ```bash
-  `brew install python mpv ffmpeg`
-* Windows (WSL2)
+  brew install python mpv ffmpeg
+- Windows (WSL2)
   
   ```bash
   sudo apt install python3 python3-pip mpv ffmpeg
@@ -41,9 +41,11 @@ A TUI music player written in Python that plays music directly from your local f
 
   ```bash
   git clone https://github.com/BaconPancakes7959/musictui.git
-  cd term-music
+  cd musictui
   pip install -e .
+  ```
 
-
-
-
+### Python Dependencies
+Only install if you don't have it
+  ```bash
+  pip install wcwidth mutagen
