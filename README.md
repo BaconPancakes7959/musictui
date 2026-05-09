@@ -33,6 +33,9 @@ Install Dependencies
   `sudo apt install python3 python3-pip mpv ffmpeg`
   
 Install MusicTui
+
 `git clone https://github.com/yourusername/term-music.git`
+
 `cd term-music`
+
 `pip install -e .`
