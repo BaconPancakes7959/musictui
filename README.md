@@ -12,6 +12,7 @@ A TUI music player written in Python that plays music directly from your local f
 * Skip forward/backward 10 seconds
 * Volume control
 * Shuffle mode
+* Repeat mode
 
 ## Dependencies
 * Python 3.8+
