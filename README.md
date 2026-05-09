@@ -14,8 +14,8 @@ A TUI music player written in Python that plays music directly from your local f
 * Shuffle mode
 
 ## Dependencies
-*Python 3.8+
-*mpv
+* Python 3.8+
+* mpv
 
 ## Installation
 Install Dependencies
