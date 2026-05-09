@@ -48,9 +48,3 @@ A TUI music player written in Python that plays music directly from your local f
   cd musictui
   pip install -e .
   ```
-
-### Python Dependencies
-Only install if you don't have it. It comes with the musictui package
-  ```bash
-  pip install wcwidth mutagen
-  ```
