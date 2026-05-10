@@ -2,6 +2,7 @@
 TUI music player - v1
 """
 
+import configparser
 import curses
 import os
 import random
@@ -13,7 +14,36 @@ import time
 from pathlib import Path
 from wcwidth import wcswidth
 
-ACCENT_COLOR = 215
+
+CONFIG_PATH = Path("~/.config/musictui/config.ini").expanduser()
+DEFAULT_ACCENT_COLOR = 215
+DEFAULT_MUSIC_DIR    = "~/Music"
+
+
+def load_config():
+    """Load config, creating it with defaults if it doesn't exist."""
+    config = configparser.ConfigParser()
+
+    if not CONFIG_PATH.exists():
+        CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
+        config["theme"]  = {"accent_color": str(DEFAULT_ACCENT_COLOR)}
+        config["player"] = {"music_dir": DEFAULT_MUSIC_DIR}
+        with open(CONFIG_PATH, "w") as f:
+            config.write(f)
+        return DEFAULT_ACCENT_COLOR, DEFAULT_MUSIC_DIR
+
+    config.read(CONFIG_PATH)
+    try:
+        accent = int(config.get("theme", "accent_color", fallback=str(DEFAULT_ACCENT_COLOR)))
+        accent = max(0, min(255, accent))
+    except (ValueError, TypeError):
+        accent = DEFAULT_ACCENT_COLOR
+
+    music_dir = config.get("player", "music_dir", fallback=DEFAULT_MUSIC_DIR)
+    return accent, music_dir
+
+
+ACCENT_COLOR, MUSIC_DIR = load_config()
 
 KEY_QUIT           = ord('q')
 KEY_SEARCH         = ord('/')
@@ -452,12 +482,14 @@ class MusicPlayerUI:
             self.stdscr.clear()
             self._last_size = (height, width)
 
+        # Row 0: title
         title = "Music Player"
         x = (width - len(title)) // 2
         self.stdscr.attron(curses.A_BOLD | curses.color_pair(4))
         self.stdscr.addstr(0, x, title)
         self.stdscr.attroff(curses.A_BOLD | curses.color_pair(4))
 
+        # Row 1: blank separator / search bar / results indicator
         if self.search_mode:
             search_text = f" Search: {self.search_input}_"
             self.stdscr.attron(curses.A_REVERSE)
@@ -471,8 +503,10 @@ class MusicPlayerUI:
         else:
             self.stdscr.addstr(1, 0, " " * (width - 1))
 
+        # Rows 2..(height-3): song list
+        # Bottom layout: progress bar = height-2, status = height-1
         start_y = 2
-        list_bottom = height - 3   
+        list_bottom = height - 3   # last usable list row (exclusive)
         max_items = list_bottom - start_y
 
         for clear_y in range(start_y, list_bottom):
@@ -527,6 +561,7 @@ class MusicPlayerUI:
                     self.stdscr.addstr(y, line_width, " " * spaces_needed)
                     self.stdscr.addstr(y, line_width + spaces_needed, duration_str)
 
+        # Row height-2: progress bar
         progress_y = height - 2
         self.stdscr.addstr(progress_y, 0, " " * (width - 1))
 
@@ -542,6 +577,7 @@ class MusicPlayerUI:
                 self.stdscr.attroff(curses.color_pair(3))
                 self.stdscr.addstr(progress_y, 1 + filled, "─" * (bar_width - filled))
 
+        # Row height-1: status
         status_y = height - 1
         self.stdscr.addstr(status_y, 0, " " * (width - 1))
 
@@ -582,6 +618,7 @@ class MusicPlayerUI:
     def draw_help_screen(self):
         height, width = self.stdscr.getmaxyx()
 
+        # Full clear only when size changes - prevents both flicker and stale content
         current_size = (height, width)
         if not hasattr(self, '_help_last_size') or self._help_last_size != current_size:
             self.stdscr.clear()
@@ -597,7 +634,7 @@ class MusicPlayerUI:
             ("Seeking", [
                 ("← / →",      "Seek -5 / +5 seconds"),
                 ("j / l",      "Seek -10 / +10 seconds"),
-                ("0 - 9",      "Jump to 0% - 90% of song"),
+                ("1 - 9",      "Jump to 10% - 90% of song"),
             ]),
             ("Volume", [
                 ("- / =",      "Volume down / up"),
@@ -619,6 +656,7 @@ class MusicPlayerUI:
             ]),
         ]
 
+        # Build flat list of renderable lines
         lines = []
         key_col  = 4
         sep_col  = 22
@@ -630,11 +668,14 @@ class MusicPlayerUI:
             lines.append(("blank", ""))
 
         total_lines = len(lines)
+        # Rows 2..(height-2) are content; row 0=title, 1=divider, height-1=footer
         visible_rows = max(1, height - 4)
 
+        # Clamp scroll
         max_scroll = max(0, total_lines - visible_rows)
         self.help_scroll = max(0, min(self.help_scroll, max_scroll))
 
+        # Title
         title = "Keybinds"
         self.stdscr.attron(curses.A_BOLD | curses.color_pair(4))
         self.stdscr.addstr(0, max(0, (width - len(title)) // 2), title[:width - 1])
@@ -642,6 +683,7 @@ class MusicPlayerUI:
 
         self.stdscr.addstr(1, 0, "─" * (width - 1))
 
+        # Content rows
         for screen_row in range(visible_rows):
             line_idx = screen_row + self.help_scroll
             y = screen_row + 2
@@ -664,7 +706,9 @@ class MusicPlayerUI:
                     self.stdscr.addstr(y, sep_col, "│")
                 if desc_col < width:
                     self.stdscr.addstr(y, desc_col, desc[:width - desc_col - 1])
+            # blank: already cleared
 
+        # Footer
         footer_left = " press h to go back "
         footer_right = f" {int(self.help_scroll / max_scroll * 100)}% ↑↓ to scroll " if max_scroll > 0 else ""
         self.stdscr.addstr(height - 1, 0, " " * (width - 1))
@@ -733,14 +777,6 @@ class MusicPlayerUI:
                 self._help_last_size = None
                 self.stdscr.clear()
                 self.needs_refresh = True
-                continue
-
-            if not self.search_mode and not self.show_help and ord('0') <= key <= ord('9'):
-                duration = self.backend.get_duration_safe()
-                if duration > 0:
-                    fraction = (key - ord('0')) / 10.0
-                    self.backend.seek_to(duration * fraction)
-                    self.needs_refresh = True
                 continue
 
             if self.search_mode:
@@ -830,6 +866,11 @@ class MusicPlayerUI:
             elif key == curses.KEY_LEFT:
                 self.backend.seek_backward(5)
                 self.needs_refresh = True
+            elif ord('1') <= key <= ord('9'):
+                duration = self.backend.get_duration_safe()
+                if duration > 0:
+                    self.backend.seek_to(duration * (key - ord('0')) / 10.0)
+                    self.needs_refresh = True
 
     def next_song(self):
         next_track = self.library.get_next_track(self.backend.current_track_path)
@@ -855,7 +896,7 @@ class MusicPlayerUI:
 def main(stdscr):
     os.environ.setdefault('ESCDELAY', '25')
     curses.set_escdelay(25)
-    music_library = Library("~/Music")
+    music_library = Library(MUSIC_DIR)
     audio_backend = MusicBackend()
 
     if not music_library.all_songs:
