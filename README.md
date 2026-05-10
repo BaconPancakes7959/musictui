@@ -3,15 +3,15 @@ A terminal music player written in Python. Plays local files through mpv, contro
 
 ## Screenshots
 
-![Main Player](pictures/main-player.png)
+![Main Player](Pictures/main-player.png)
 
 *The main interface showing playlist and now playing*
 
-![Search Feature](pictures/search.png)
+![Search Feature](Pictures/search.png)
 
-*Searching for "undead"*
+*Searching for "lo"*
 
-![Help Screen](pictures/help-screen.png)
+![Help Screen](Pictures/help-screen.png)
 
 *Press 'h' for keyboard shortcuts*
 
