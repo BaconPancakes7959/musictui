@@ -1,6 +1,20 @@
 # MusicTui
 A terminal music player written in Python. Plays local files through mpv, controlled entirely from the keyboard.
 
+## Screenshots
+
+![Main Player](pictures/main-player.png)
+
+*The main interface showing playlist and now playing*
+
+![Search Feature](pictures/search.png)
+
+*Searching for "undead"*
+
+![Help Screen](pictures/help-screen.png)
+
+*Press 'h' for keyboard shortcuts*
+
 ## Features
 - Plays MP3, FLAC, OGG, WAV, AAC, M4A, Opus, WMA, APE and more
 - Search your library instantly
