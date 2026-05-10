@@ -1,27 +1,32 @@
 # MusicTui
-A TUI music player written in Python that plays music directly from your local files. 
+A terminal music player written in Python. Plays local files through mpv, controlled entirely from the keyboard.
 
 ## Features
-- Play media formats
-  
-  - MP3, FLAC, OGG, WAV, AAC, M4A, Opus, WMA, APE
-  - Extra: AC3, DTS, TrueHD, AMR, AIFF
-    
-- Search your library
-- Customizable color theme
-- Skip forward/backward 5 and 10 seconds
-- Volume control
-- Shuffle mode
-- Repeat mode
-- Press 0-9 to jump to 0%-90% of the current song
-- Press h for a Keybinds menu
+- Plays MP3, FLAC, OGG, WAV, AAC, M4A, Opus, WMA, APE and more
+- Search your library instantly
+- Shuffle and repeat modes
+- Volume control and mute
+- Skip forward/backward by 5s or 10s
+- Press 0–9 to jump to any 10% point in a song (like YouTube)
+- Customizable accent color via config file
+- Press h for a full keybinds screen
+
+## Platform Support
+Platform          Supported 
+Linux             Full support
+macOS             Full support
+WSL2 (Windows)    Works
+Native Windows    Not supported
+
+Native Windows is not supported because this player communicates with mpv over Unix sockets, which Windows does not have. mpv itself runs on Windows fine, but the IPC layer this player uses does not.
 
 ## Dependencies
 - Python 3.8+
 - mpv
+- ffmpeg (for audio duration detection)
 
 ## Installation
-### Install Dependencies
+### 1. Install Dependencies
 - Arch Linux
   
   ```bash
@@ -43,50 +48,73 @@ A TUI music player written in Python that plays music directly from your local f
   sudo apt install python3 python3-pip mpv ffmpeg
   ```
   
-### Install MusicTui
-Download The Code:
-  ```bash
-  git clone https://github.com/BaconPancakes7959/musictui.git
-  cd musictui
-  ```
-Or just copy paste the code
+### 2. Get the player
+Clone the repo:
+```bash
+git clone https://github.com/BaconPancakes7959/musictui.git
+cd musictui
+```
+Or download just the script:
+```bash
+curl -O https://raw.githubusercontent.com/BaconPancakes7959/musictui/main/music_player.py
+```
 
-### Create an isolated environment (recommended)
-- Windows
-  ```powershell
-  python -m venv .venv
-  .\.venv\Scripts\Activate.ps1   # PowerShell
-  # or
-  .\.venv\Scripts\activate.bat   # cmd
-  ```
-- MacOS/Linux
-  ```bash
-  python3 -m venv .venv
-  source .venv/bin/activate
-  ```
+### 3. Create virtual environment (recommended)
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
   
-### Install Python packages
+### 4. Install Python dependencies
 With the virtualenv active:
 ```bash
-pip install --upgrade pip
 pip install mutagen wcwidth
 ```
 
-### Run the App
+### 5. Run the App
 With dependencies installed and your virtualenv active:
 ```bash
 python musictui.py
 ```
-(Replace musictui.py with the actual entrypoint filename if different.)
+By default the player looks for music in ~/Music. See Configuration below to change this.
 
-## Troubleshooting and Tips
-- Permission errors on Linux/macOS: avoid `sudo pip install` inside a virtualenv. Use the virtualenv or `--user` for global installs.
+## Configuration
+On first run, a config file is created at:
+`~/.config/musictui/config.ini`
+Open it in any text editor:
+```ini
+[theme]
+accent_color = 215
 
-- Multiple Python versions: use `python3` / `pip3` if python points to Python 2.
+[player]
+music_dir = ~/Music
+```
+`accent_color` is a number from 0–255 (xterm-256 color palette). Restart the player after changing it.
+`music_dir` sets where the player looks for music. Supports ~ for your home directory. The player searches recursively, so subdirectories are included.
 
-- Terminal rendering issues: ensure your terminal supports UTF‑8 and a monospace font; `wcwidth` helps with character widths.
+## Keybinds
+| Key | Action |
+|-----|--------|
+| `Enter` | Play selected song |
+| `Space` | Pause / Resume |
+| `p / n` |Previous / Next song|
+| `← / →` |Seek −5 / +5 seconds|
+| `j / l` |Seek −10 / +10 seconds|
+| `0–9`   |Jump to 0%–90% of song|
+| `- / =` |Volume down / up|
+| `m`     |Toggle mute|
+| `↑ / ↓` |Navigate list|
+| `/`     |Search|
+| `Esc / c` |Clear search|
+| `s`     |Toggle shuffle|
+| `r`     |Toggle repeat|
+| `h`     |Keybinds screen|
+| `q`     |Quit|
 
-- If mutagen import fails: confirm you installed into the same Python interpreter you run the script with: `python -m pip show mutagen`.
-
-- Windows PowerShell execution policy: if activation fails, run PowerShell as admin and set Set-ExecutionPolicy RemoteSigned -Scope   CurrentUser.
+## Troubleshooting
+No songs found — check that music_dir in your config points to the right folder and that it contains .mp3 or other supported files in it or any subfolder.
+wcwidth or mutagen import error — make sure you installed into the same Python you're running the script with. If using a venv, confirm it's activated: which python3 should point inside your .venv folder.
+Colors look wrong — your terminal may not support 256 colors. Run echo $TERM — it should say xterm-256color or similar. Most modern terminals support this by default.
+Player exits but mpv keeps playing — this shouldn't happen with the current version, but if it does: pkill mpv.
+macOS: curses errors — make sure you're using a proper terminal emulator (iTerm2, Alacritty, Ghostty). The default macOS Terminal.app can have issues with some curses features.
   
