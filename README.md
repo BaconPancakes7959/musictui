@@ -9,7 +9,7 @@ A TUI music player written in Python that plays music directly from your local f
     
 - Search your library
 - Customizable color theme
-- Skip forward/backward 10 seconds
+- Skip forward/backward 5 and 10 seconds
 - Volume control
 - Shuffle mode
 - Repeat mode
