@@ -91,6 +91,20 @@ accent_color = 215
 music_dir = ~/Music
 ```
 `accent_color` is a number from 0–255 (xterm-256 color palette). Restart the player after changing it.
+To browse colors, run:
+```bash
+python3 -c "
+import curses
+def show(s):
+    curses.start_color()
+    curses.use_default_colors()
+    for i in range(1, 256):
+        curses.init_pair(i, i, -1)
+        s.addstr(i // 16, (i % 16) * 5, f'{i:3}', curses.color_pair(i))
+    s.getch()
+curses.wrapper(show)
+"
+```
 `music_dir` sets where the player looks for music. Supports ~ for your home directory. The player searches recursively, so subdirectories are included.
 
 ## Keybinds
@@ -113,9 +127,13 @@ music_dir = ~/Music
 | `q`     |Quit|
 
 ## Troubleshooting
-No songs found — check that music_dir in your config points to the right folder and that it contains .mp3 or other supported files in it or any subfolder.
-wcwidth or mutagen import error — make sure you installed into the same Python you're running the script with. If using a venv, confirm it's activated: which python3 should point inside your .venv folder.
-Colors look wrong — your terminal may not support 256 colors. Run echo $TERM — it should say xterm-256color or similar. Most modern terminals support this by default.
-Player exits but mpv keeps playing — this shouldn't happen with the current version, but if it does: pkill mpv.
-macOS: curses errors — make sure you're using a proper terminal emulator (iTerm2, Alacritty, Ghostty). The default macOS Terminal.app can have issues with some curses features.
+No songs found — check that `music_dir` in your config points to the right folder and that it contains `.mp3` or other supported files in it or any subfolder.
+
+`wcwidth` or `mutagen` import error — make sure you installed into the same Python you're running the script with. If using a venv, confirm it's activated: `which python3` should point inside your `.venv` folder.
+
+Colors look wrong — your terminal may not support 256 colors. Run `echo $TERM —` it should say `xterm-256color` or similar. Most modern terminals support this by default.
+
+Player exits but mpv keeps playing — this shouldn't happen with the current version, but if it does: `pkill mpv`.
+
+macOS: `curses` errors — make sure you're using a proper terminal emulator (iTerm2, Alacritty, Ghostty). The default macOS Terminal.app can have issues with some curses features.
   
