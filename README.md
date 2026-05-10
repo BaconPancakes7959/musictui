@@ -13,6 +13,8 @@ A TUI music player written in Python that plays music directly from your local f
 - Volume control
 - Shuffle mode
 - Repeat mode
+- Press 0-9 to jump to 0%-90% of the current song
+- Press h for a Keybinds menu
 
 ## Dependencies
 - Python 3.8+
@@ -43,8 +45,4 @@ A TUI music player written in Python that plays music directly from your local f
   
 ### Install MusicTui
 
-  ```bash
-  git clone https://github.com/BaconPancakes7959/musictui.git
-  cd musictui
-  pip install -e .
-  ```
+  
