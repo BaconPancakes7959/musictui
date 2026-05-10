@@ -14,10 +14,10 @@ A terminal music player written in Python. Plays local files through mpv, contro
 ## Platform Support
 |Platform          |Supported| 
 |------------------|---------|
-|Linux             |Full support|
-|macOS             |Full support|
-|WSL2 (Windows)    |Works|
-|Native Windows    |Not supported|
+|Linux             |✅Full support|
+|macOS             |✅Full support|
+|WSL2 (Windows)    |✅Works|
+|Native Windows    |❌Not supported|
 
 Native Windows is not supported because this player communicates with mpv over Unix sockets, which Windows does not have. mpv itself runs on Windows fine, but the IPC layer this player uses does not.
 
