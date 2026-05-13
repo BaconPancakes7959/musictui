@@ -634,7 +634,7 @@ class MusicPlayerUI:
             ("Seeking", [
                 ("← / →",      "Seek -5 / +5 seconds"),
                 ("j / l",      "Seek -10 / +10 seconds"),
-                ("1 - 9",      "Jump to 10% - 90% of song"),
+                ("0 - 9",      "Jump to 0% - 90% of song"),
             ]),
             ("Volume", [
                 ("- / =",      "Volume down / up"),
@@ -866,7 +866,7 @@ class MusicPlayerUI:
             elif key == curses.KEY_LEFT:
                 self.backend.seek_backward(5)
                 self.needs_refresh = True
-            elif ord('1') <= key <= ord('9'):
+            elif ord('0') <= key <= ord('9'):
                 duration = self.backend.get_duration_safe()
                 if duration > 0:
                     self.backend.seek_to(duration * (key - ord('0')) / 10.0)
