@@ -1,4 +1,5 @@
 # MusicTui
+Hi I own this guthub
 A terminal music player written in Python. Plays local files through mpv, controlled entirely from the keyboard.
 
 ## Screenshots
